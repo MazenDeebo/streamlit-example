@@ -1,27 +1,15 @@
-import streamlit as st
-import os
-
-# Function to check if the app has already been run
-def check_run_flag():
-    if os.path.isfile("streamlit_run_flag.txt"):
-        return False
-    else:
-        with open("streamlit_run_flag.txt", "w") as file:
-            file.write("App has been run once.")
-        return False
-
 def main():
-    if check_run_flag():
-        st.write("The application has already been run once. You cannot run it again.")
-        return
+    print("Career Assessment")
+    print("Please fill this form carefully and precisely because this data will be used for career analysis.")
 
-    st.title('Career Assessment')
-    st.write("Please fill this form carefully and precisely because this data will be used for career analysis.")
-
-    full_name = st.text_input('Full Name')
+    full_name = input('Full Name: ')
 
     major_options = ('Engineering (هندسة)', 'Medical (طب)', 'Computer Science (حاسبات و معلومات)', 'Sport Science (تربية رياضية)', 'Business (تجارة)')
-    major = st.selectbox('Major (your college)', major_options)
+    print("Major (your college):")
+    for idx, option in enumerate(major_options, 1):
+        print(f"{idx}. {option}")
+    major_idx = int(input("Enter the number corresponding to your major: "))
+    major = major_options[major_idx - 1]
 
     activities_options = [
         'Adapt to change or perform a variety of duties that may change',
@@ -35,7 +23,11 @@ def main():
         'Have a flexible schedule',
         'Handle several responsibilities at once'
     ]
-    activities = st.multiselect('Activities (Choose one or more)', activities_options)
+    print("Activities (Choose one or more):")
+    for idx, option in enumerate(activities_options, 1):
+        print(f"{idx}. {option}")
+    activities_indices = input("Enter the numbers corresponding to your activities separated by commas (e.g., 1,3,5): ")
+    activities = [activities_options[int(idx) - 1] for idx in activities_indices.split(',')]
 
     character_options = [
         'Adventurous',
@@ -47,7 +39,11 @@ def main():
         'Friendly',
         'Good communicator'
     ]
-    character_traits = st.multiselect('What would describe you? (Choose one or more)', character_options)
+    print("What would describe you? (Choose one or more):")
+    for idx, option in enumerate(character_options, 1):
+        print(f"{idx}. {option}")
+    character_indices = input("Enter the numbers corresponding to your character traits separated by commas (e.g., 1,3,5): ")
+    character_traits = [character_options[int(idx) - 1] for idx in character_indices.split(',')]
 
     personal_traits_options = [
         'Non-judgmental',
@@ -60,9 +56,13 @@ def main():
         'Self-confident',
         'See details in the big picture'
     ]
-    personal_traits = st.multiselect('(Choose one or more) personal traits', personal_traits_options)
+    print("(Choose one or more) personal traits:")
+    for idx, option in enumerate(personal_traits_options, 1):
+        print(f"{idx}. {option}")
+    personal_indices = input("Enter the numbers corresponding to your personal traits separated by commas (e.g., 1,3,5): ")
+    personal_traits = [personal_traits_options[int(idx) - 1] for idx in personal_indices.split(',')]
 
-    stressed_out = st.radio('I get stressed out easily', ('Yes', 'No'))
+    stressed_out = input('I get stressed out easily (Yes/No): ')
 
     favorite_subjects_options = [
         'Biology',
@@ -74,16 +74,21 @@ def main():
         'Geography',
         'History'
     ]
-    favorite_subjects = st.multiselect('Favorite School Subjects (Choose one or more)', favorite_subjects_options)
+    print("Favorite School Subjects (Choose one or more):")
+    for idx, option in enumerate(favorite_subjects_options, 1):
+        print(f"{idx}. {option}")
+    favorite_subjects_indices = input("Enter the numbers corresponding to your favorite subjects separated by commas (e.g., 1,3,5): ")
+    favorite_subjects = [favorite_subjects_options[int(idx) - 1] for idx in favorite_subjects_indices.split(',')]
 
-    if st.button('Predict'):
-        # Perform prediction or data processing here based on the collected inputs
-        st.write(f"Full Name: {full_name}")
-        st.write(f"Activities: {', '.join(activities)}")
-        st.write(f"Character Traits: {', '.join(character_traits)}")
-        st.write(f"Personal Traits: {', '.join(personal_traits)}")
-        st.write(f"Stressed Out: {stressed_out}")
-        st.write(f"Favorite Subjects: {', '.join(favorite_subjects)}")
+    # Perform prediction or data processing here based on the collected inputs
+    print("Prediction:")
+    print(f"Full Name: {full_name}")
+    print(f"Major: {major}")
+    print(f"Activities: {', '.join(activities)}")
+    print(f"Character Traits: {', '.join(character_traits)}")
+    print(f"Personal Traits: {', '.join(personal_traits)}")
+    print(f"Stressed Out: {stressed_out}")
+    print(f"Favorite Subjects: {', '.join(favorite_subjects)}")
 
 if __name__ == "__main__":
     main()
