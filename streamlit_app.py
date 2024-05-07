@@ -1,40 +1,89 @@
-import altair as alt
-import numpy as np
-import pandas as pd
 import streamlit as st
+import os
 
-"""
-# Welcome to Streamlit!
+# Function to check if the app has already been run
+def check_run_flag():
+    if os.path.isfile("streamlit_run_flag.txt"):
+        return False
+    else:
+        with open("streamlit_run_flag.txt", "w") as file:
+            file.write("App has been run once.")
+        return False
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:.
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+def main():
+    if check_run_flag():
+        st.write("The application has already been run once. You cannot run it again.")
+        return
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+    st.title('Career Assessment')
+    st.write("Please fill this form carefully and precisely because this data will be used for career analysis.")
 
-num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
-num_turns = st.slider("Number of turns in spiral", 1, 300, 31)
+    full_name = st.text_input('Full Name')
 
-indices = np.linspace(0, 1, num_points)
-theta = 2 * np.pi * num_turns * indices
-radius = indices
+    major_options = ('Engineering (هندسة)', 'Medical (طب)', 'Computer Science (حاسبات و معلومات)', 'Sport Science (تربية رياضية)', 'Business (تجارة)')
+    major = st.selectbox('Major (your college)', major_options)
 
-x = radius * np.cos(theta)
-y = radius * np.sin(theta)
+    activities_options = [
+        'Adapt to change or perform a variety of duties that may change',
+        'Budget and handle money and records with accuracy and reliability',
+        'Care about people, their needs, and their problems',
+        'Concentrate for long periods without being distracted',
+        'Do routine, organized, and accurate work',
+        'Explore new technology',
+        'Find the best way or a new way to do something',
+        'Help people overcome their challenges to be at their best',
+        'Have a flexible schedule',
+        'Handle several responsibilities at once'
+    ]
+    activities = st.multiselect('Activities (Choose one or more)', activities_options)
 
-df = pd.DataFrame({
-    "x": x,
-    "y": y,
-    "idx": indices,
-    "rand": np.random.randn(num_points),
-})
+    character_options = [
+        'Adventurous',
+        'Caring',
+        'Competitive',
+        'Creative and imaginative',
+        'Creative problem-solver',
+        'Decision maker',
+        'Friendly',
+        'Good communicator'
+    ]
+    character_traits = st.multiselect('What would describe you? (Choose one or more)', character_options)
 
-st.altair_chart(alt.Chart(df, height=700, width=700)
-    .mark_point(filled=True)
-    .encode(
-        x=alt.X("x", axis=None),
-        y=alt.Y("y", axis=None),
-        color=alt.Color("idx", legend=None, scale=alt.Scale()),
-        size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
-    ))
+    personal_traits_options = [
+        'Non-judgmental',
+        'Non-materialistic',
+        'Optimistic',
+        'Organized',
+        'Pay attention to detail',
+        'Persuasive',
+        'Problem solver',
+        'Self-confident',
+        'See details in the big picture'
+    ]
+    personal_traits = st.multiselect('(Choose one or more) personal traits', personal_traits_options)
+
+    stressed_out = st.radio('I get stressed out easily', ('Yes', 'No'))
+
+    favorite_subjects_options = [
+        'Biology',
+        'Chemistry',
+        'Computer',
+        'Physics',
+        'Math',
+        'Foreign Language',
+        'Geography',
+        'History'
+    ]
+    favorite_subjects = st.multiselect('Favorite School Subjects (Choose one or more)', favorite_subjects_options)
+
+    if st.button('Predict'):
+        # Perform prediction or data processing here based on the collected inputs
+        st.write(f"Full Name: {full_name}")
+        st.write(f"Activities: {', '.join(activities)}")
+        st.write(f"Character Traits: {', '.join(character_traits)}")
+        st.write(f"Personal Traits: {', '.join(personal_traits)}")
+        st.write(f"Stressed Out: {stressed_out}")
+        st.write(f"Favorite Subjects: {', '.join(favorite_subjects)}")
+
+if __name__ == "__main__":
+    main()
